@@ -1,30 +1,3 @@
-var bt = document.getElementById("btn");
-var tx = document.getElementById("txt");
-bt.onclick = function () {
-    var ul = document.getElementById("list");
-    if (!tx.value) {
-        toggleError();
-    }
-    else {
-        var newLi = document.createElement("li");
-        newLi.innerText = tx.value;
-        ul.appendChild(newLi);
-        tx.value = "";
-    }
-    hideControl("warning");
-    //alert("Merhaba ben buton");
-}
-
-tx.onkeyup = function () {
-    if (this.value) {
-        hideControl("error");
-        hideControl("warning");
-    }
-    else {
-        showControl("warning");
-    }
-}
-
 window.onload = setupContainer;
 window.onresize = setupContainer;
 
@@ -33,24 +6,48 @@ function setupContainer() {
     container.style.marginLeft = ((window.innerWidth / 2) - (container.clientWidth / 2)) + "px";
 }
 
-function toggleError() {
-    var err = showControl("error");
-    setTimeout(function () {
-        hideControl(err);
-    }, 3000);
-}
-
-function hideControl(ctrl) {
-    if (typeof ctrl == "object") {
-        ctrl.style.display = "none";
-        return;
+new Vue({
+    el: "#work",
+    data: {
+        text: "",
+        people: [],
+        validationMessage: "Bu alan zorunludur",
+        isError: false,
+        isWarning: false,
+        isInvoked: false
+    },
+    methods: {
+        add: function () {
+            this.isInvoked = true;
+            if (this.text) {
+                this.isInvoked = false;
+                this.people.push(this.text);
+                this.text = "";
+            }
+            else {
+                var self = this;
+                self.validationMessage = "Bu alan zorunludur";
+                self.isWarning = false;
+                self.isError = true;
+                setTimeout(function () {
+                    self.isInvoked = false;
+                }, 3000);
+            }
+        },
+        onChange: function () {
+            if (!this.text) {
+                this.validationMessage = "Deðer olmadan ekleme yapýlamaz";
+                this.isWarning = true;
+                this.isError = false;
+            }
+        }
+    },
+    computed: {
+        isRequired: function () {
+            if (!this.text) {
+                this.isError = true;
+            }
+            return this.text == "";
+        }
     }
-    var c = document.getElementById(ctrl);
-    c.style.display = "none";
-}
-
-function showControl(ctrlName) {
-    var err = document.getElementById(ctrlName);
-    err.style.display = "block";
-    return err;
-}
+});

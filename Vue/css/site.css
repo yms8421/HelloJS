@@ -64,14 +64,12 @@ body {
         display: block;
     }
 
-    .alerts #error {
+    .alerts .error {
         color: #b30606;
-        display: none;
     }
 
-    .alerts #warning {
+    .alerts .warning {
         color: #ecc770;
-        display: none;
     }
 
 ul {
