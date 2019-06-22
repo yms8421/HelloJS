@@ -1,40 +1,41 @@
-var bt = document.getElementById("btn");
-var tx = document.getElementById("txt");
-bt.onclick = function () {
-    var ul = document.getElementById("list");
-    if (!tx.value) {
+$("#btn").click(function () {
+    var txt = $("#txt");
+    if (!txt.val()) {
         toggleError();
     }
     else {
-        var newLi = document.createElement("li");
-        newLi.innerText = tx.value;
-        ul.appendChild(newLi);
-        tx.value = "";
+        $("#list").append("<li>" + txt.val() + "</li>");
+        txt.val("");
     }
-    hideControl("warning");
-    //alert("Merhaba ben buton");
-}
+    hideControl("#warning");
+});
 
-tx.onkeyup = function () {
+$("#txt").keyup(function () {
     if (this.value) {
-        hideControl("error");
-        hideControl("warning");
+        hideControl("#error");
+        hideControl("#warning");
     }
     else {
-        showControl("warning");
+        showControl("#warning");
     }
-}
+});
 
 window.onload = setupContainer;
 window.onresize = setupContainer;
 
 function setupContainer() {
-    var container = document.getElementById("work");
-    container.style.marginLeft = ((window.innerWidth / 2) - (container.clientWidth / 2)) + "px";
+    var container = $("#work");
+    container.css("margin-left", ((window.innerWidth / 2) - (container.width() / 2)) + "px");
+
+    //container.css({
+    //    "display": "block",
+    //    "color": "#FFF",
+    //    "font-size": "24px"
+    //});
 }
 
 function toggleError() {
-    var err = showControl("error");
+    var err = showControl("#error");
     setTimeout(function () {
         hideControl(err);
     }, 3000);
@@ -42,15 +43,15 @@ function toggleError() {
 
 function hideControl(ctrl) {
     if (typeof ctrl == "object") {
-        ctrl.style.display = "none";
+        ctrl.css("display", "none");
         return;
     }
-    var c = document.getElementById(ctrl);
-    c.style.display = "none";
+    var c = $(ctrl);
+    c.css("display", "none");
 }
 
 function showControl(ctrlName) {
-    var err = document.getElementById(ctrlName);
-    err.style.display = "block";
+    var err = $(ctrlName);
+    err.css("display", "block");
     return err;
 }
